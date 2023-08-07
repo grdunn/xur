@@ -1,6 +1,6 @@
 <script>
 import Card from './components/Card.vue'
-
+import MANIFEST_JSON from '../manifest.json';
 export default {
   components: {
     Card
@@ -12,39 +12,76 @@ export default {
   },
   created() {
     const fetchBungieApiCalls = async () => {
+
+      // Going to put all the async/await 
+      // calls in a big try/catch block.
       try {
 
-        let vendorPromise = await fetch('/api/vendor');
-        let vendor = await vendorPromise.json();
-        let manifestPromise = await fetch('/api/manifest');
-        let manifest = await manifestPromise.json();
-        let statManifest = manifest.Response.jsonWorldComponentContentPaths.en.DestinyStatDefinition;
-        let statsPromise = await fetch(`https://www.bungie.net/${statManifest}`);
-        let stats = await statsPromise.json();
-        let sales = vendor.Response.sales.data['2190858386'].saleItems;
+        // API calls for items and manifests.
+        const XUR_HASH = '2190858386';
+        const VENDOR_PROMISE = await fetch('/api/vendor');
+        const VENDOR = await VENDOR_PROMISE.json();
+        const MANIFEST_PROMISE = await fetch('/api/manifest');
+        const MANIFEST = await MANIFEST_PROMISE.json();
+        const STAT_MANIFEST = MANIFEST.Response.jsonWorldComponentContentPaths.en.DestinyStatDefinition;
+        const STATS_PROMISE = await fetch(`https://www.bungie.net/${STAT_MANIFEST}`);
+        const STATS = await STATS_PROMISE.json();
+        const SALES = VENDOR.Response.sales.data[XUR_HASH].saleItems;
+        
 
+        // console.log(MANIFEST);
+
+        // Set itemArray to an empty array first.
+        // We'll loop through and add items to this bucket.
         let itemArray = [];
 
-        for (const property in sales) {
-          let hash = sales[property].itemHash;
+        // Loop through all of Xur's sales inventory
+        for (const property in SALES) {
+          let hash = SALES[property].itemHash;
+
+          // Grab the actual item from the Bungie manifest.
           let xurItemRequest = await fetch(`/api/item?hash=${hash}`);
+          let xurItem = await xurItemRequest.json();
+          // let xurItem = MANIFEST_JSON[hash]
+          // console.log(xurItem)
           let statArrayRaw = [];
-          const xurItem = await xurItemRequest.json();
+          let traitArrayRaw = [];
+
+          // Loop through the stats, and only grab them if they are weapon type.
+          // The Bungie API awkwardly does not provide meaningful stats for armor.
+          // Since the entry on Xur's object is a hash, we have to cross reference
+          // the Stats manifest to pull out the name. 
           if (xurItem.itemType === 3 && xurItem.stats && xurItem.stats.stats) {
             for (const s in xurItem.stats.stats) {
-              if (stats[s].displayProperties.name) {
+              if (STATS[s].displayProperties.name) {
                 var tempObj = {
-                  ['name']: stats[s].displayProperties.name,
+                  ['name']: STATS[s].displayProperties.name,
                   ['value']: xurItem.stats.stats[s].value
                 }
                 statArrayRaw.push(tempObj)
               }
             }  
+            for (const p in xurItem.sockets.socketEntries) {
+              let hash = xurItem.sockets.socketEntries[p].singleInitialItemHash;
+              //singleInitialItemHash
+              if (!hash == 0) {
+                // console.log(MANIFEST_JSON[hash]);
+                let tempObj = {
+                  ['name']: MANIFEST_JSON[hash].displayProperties.name,
+                  ['description']: MANIFEST_JSON[hash].displayProperties.description,
+                  ['icon']: MANIFEST_JSON[hash].displayProperties.icon
+                }
+                traitArrayRaw.push(tempObj)
+              }
+            }
           }
+          
 
           let statArray = [];
 
-          let statOrderObj = {
+          // Re-order the stats that are more legible 
+          // and consistent with Bungie's in game experience.
+          const STAT_ORDER_OBJECT = {
             "Impact": 0,
             "Range": 0,
             "Stability": 0,
@@ -55,10 +92,12 @@ export default {
             "Zoom": 0
           }
           
-          Object.keys(statOrderObj).forEach(key => {
+          Object.keys(STAT_ORDER_OBJECT).forEach(key => {
             statArray.push(statArrayRaw.find(o => o.name === key));
           });
 
+          // Create the big item object and push it into the
+          // items array.
           let itemObject = {
             hash: xurItem.hash,
             name: xurItem.displayProperties.name,
@@ -67,13 +106,19 @@ export default {
             screenshot: `https://bungie.net/${xurItem.screenshot}`,
             type: xurItem.itemTypeAndTierDisplayName,
             stats: statArray,
-            itemType: xurItem.itemType
+            itemType: xurItem.itemType,
+            traits: traitArrayRaw
           }
           itemArray.push(itemObject)
         }
+
+        // We dont want the first which, which is an exotic engram.
         itemArray.pop();
+        // We also dont want the last item, which is an exotic cipher. 
         itemArray.shift();
+
         this.items = itemArray;
+        console.log(itemArray);
       } catch (e) {
         return console.log(e);;
       } finally {
@@ -112,6 +157,6 @@ export default {
   <div v-else class="u-loading">
     <div class="u-loading__inner">
       <img src="/loader_ghost.gif"/>
-      </div>
     </div>
+  </div>
 </template>
