@@ -82,89 +82,83 @@ table {
 }
 
 .c-item__card {
-    position: relative;
-    // border-style: solid;
-    border-radius: 0.8rem;
-    border-color: #e5e7eb;
-    border-width: 1px;
-    padding: 40px;
-    h4 {
-        display: inline-block;
-        margin-bottom: 30px;
-        font-size: 1.5rem;
-        opacity: 0.7;
-        background-color: yellow;
-    }
+  position: relative;
+  border-radius: 0.8rem;
+  border-color: #e5e7eb;
+  border-width: 1px;
+  padding: 40px;
+  h4 {
+    display: inline-block;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    background-color: yellow;
+  }
 }
 
 .c-item__icon {
-    display: block;
-    border-radius: 0.8rem;
-    width: 60px;
+  display: block;
+  border-radius: 0.8rem;
+  width: 60px;
 }
 
 
 .c-item__description {
-    display: flex;
-    box-sizing: border-box;
+  display: flex;
+  box-sizing: border-box;
 }
 
 .c-item__screenshot {
-    background-size: cover;
-    background-position: center;
-    width: 50%;
-    border-radius: 0.8rem;
-    min-height: 200px;
-    max-height: 250px;
+  background-size: cover;
+  background-position: center;
+  width: 50%;
+  border-radius: 0.8rem;
+  min-height: 200px;
+  max-height: 250px;
 }
 
 .c-item__stats {
-    // background-color: rgba(259, 250, 251, 1);
-    // border: 1px solid #e5e7eb;
-    border-radius: 1rem;
-    margin: 30px 0;
-    // width: 50%;
-    align-self: center;
+  border-radius: 1rem;
+  margin: 30px 0;
+  align-self: center;
 }
 
 .c-item__stats-list {
-    li {
-        display: flex;
-        justify-content: space-between;;
-        margin: 10px 0px;
-    }
-    progress {
-        width: 50%;
-    }
+  li {
+    display: flex;
+    justify-content: space-between;;
+    margin: 10px 0px;
+  }
+  progress {
+    width: 50%;
+  }
 }
 
 .c-item__stats-name {
-    width: 40%;
-    // text-align: right;
+  width: 40%;
 }
 
 .c-item__stats-value {
-    width: 10%;
-    // text-align: center;
+  width: 10%;
 }
 
 .c-item__meta {
-    width: 100%;
-    padding-right: 40px;
-    h2 {
-        font-size: 3.8rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-    p {
-        line-height: 1.4;
-        opacity: 1;
-        font-weight: 300;
-        margin-bottom: 10px;
-        padding: 1rem 0;
-        font-size: 1.8rem;
-        max-width: 50rem;
-    }
+  width: 100%;
+  padding-right: 40px;
+  h2 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  p {
+    line-height: 1.6;
+    opacity: 0.9;
+    font-weight: 300;
+    margin-bottom: 10px;
+    padding: 1rem 0;
+    font-size: 1.8rem;
+    max-width: 50rem;
+  }
 }
 
 .c-aside {
@@ -254,4 +248,29 @@ table {
     span {
         font-weight: 300;
     }
+}
+
+.c-item__traits {
+  margin-top: 2.5rem;
+}
+
+.c-item__traits-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0px -1.5rem;
+  box-sizing: border-box;
+  li {
+    box-sizing: border-box;
+    width: calc(100%/3);
+    padding: 1.5rem;
+  }
+}
+
+.c-item__traits-item {
+  h3 {
+    font-weight: 700;
+  }
+  p {
+    font-size: 1.4rem;
+  }
 }

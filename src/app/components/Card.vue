@@ -28,6 +28,16 @@ export default {
             </li>
           </ul>
         </div >
+        <div class="c-item__traits">
+          <ul class="c-item__traits-list">
+            <li v-for="trait in item.traits">
+              <div class="c-item__traits-item">
+                <h3>{{ trait.name  }}</h3>
+                <p>{{ trait.description  }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

@@ -27,9 +27,8 @@ export default {
         const STATS_PROMISE = await fetch(`https://www.bungie.net/${STAT_MANIFEST}`);
         const STATS = await STATS_PROMISE.json();
         const SALES = VENDOR.Response.sales.data[XUR_HASH].saleItems;
-        
 
-        // console.log(MANIFEST);
+        console.log(VENDOR);
 
         // Set itemArray to an empty array first.
         // We'll loop through and add items to this bucket.
@@ -39,11 +38,10 @@ export default {
         for (const property in SALES) {
           let hash = SALES[property].itemHash;
 
-          // Grab the actual item from the Bungie manifest.
+          // Grab the actual item from the Bungie API.
           let xurItemRequest = await fetch(`/api/item?hash=${hash}`);
           let xurItem = await xurItemRequest.json();
-          // let xurItem = MANIFEST_JSON[hash]
-          // console.log(xurItem)
+
           let statArrayRaw = [];
           let traitArrayRaw = [];
 
@@ -61,16 +59,17 @@ export default {
                 statArrayRaw.push(tempObj)
               }
             }  
+
+            // Loop through the sockets, which contain the perks and other fun stuff.
+            // We'll use the manifest, as to avoid pinging the API. Also, faster.
             for (const p in xurItem.sockets.socketEntries) {
               let hash = xurItem.sockets.socketEntries[p].singleInitialItemHash;
-              //singleInitialItemHash
               if (!hash == 0) {
-                // console.log(MANIFEST_JSON[hash]);
-                let tempObj = {
-                  ['name']: MANIFEST_JSON[hash].displayProperties.name,
-                  ['description']: MANIFEST_JSON[hash].displayProperties.description,
-                  ['icon']: MANIFEST_JSON[hash].displayProperties.icon
-                }
+                  let tempObj = {
+                    ['name']: MANIFEST_JSON[hash].displayProperties.name,
+                    ['description']: MANIFEST_JSON[hash].displayProperties.description,
+                    ['icon']: 'https://bungie.net' + MANIFEST_JSON[hash].displayProperties.icon
+                  }
                 traitArrayRaw.push(tempObj)
               }
             }
