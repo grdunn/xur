@@ -3,13 +3,15 @@
   border-radius: 0.8rem;
   border-color: #e5e7eb;
   border-width: 1px;
-  padding: 40px;
   h4 {
     display: inline-block;
     margin-bottom: 30px;
     font-size: 1.5rem;
     opacity: 0.7;
     background-color: yellow;
+  }
+  @media (min-width: $tablet) {
+    padding: 4rem;
   }
 }
 
@@ -61,7 +63,6 @@
 
 .c-item__meta {
   width: 100%;
-  padding-right: 40px;
   h2 {
     font-size: 3.8rem;
     font-weight: 700;
@@ -89,8 +90,11 @@
   box-sizing: border-box;
   li {
     box-sizing: border-box;
-    width: calc(100%/3);
+    width: calc(100%/2);
     padding: 1.5rem;
+    @media (min-width: $tablet) {
+      width: calc(100%/3);
+    }
   }
 }
 

@@ -132,8 +132,8 @@ export default {
 <template>
   <div v-if="items.length" class="o-container">
     <header class="c-header">
-      <div class="">
-        <h1>Xur Inventory</h1>
+      <div>
+        <h1><a href="#">Xur Inventory</a></h1>
       </div>
       <h6>IX</h6>
     </header>
