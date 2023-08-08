@@ -153,8 +153,8 @@ export default {
       </ul>
     </aside>
   </div>
-  <div v-else class="u-loading">
-    <div class="u-loading__inner">
+  <div v-else class="c-loading">
+    <div class="c-loading__inner">
       <img src="/loader_ghost.gif"/>
     </div>
   </div>
