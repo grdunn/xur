@@ -35,7 +35,6 @@ router.get('/item', async (_req, res) => {
   res.status(200).send(data.Response);
 });
 
-
 router.get('*', async (_req, res) => {
     res.redirect('/')
 });
