@@ -19,7 +19,7 @@ export default {
           <h4>{{  item.type }}</h4>
           <h2>{{ item.name }}</h2>
           <p>{{ item.description }}</p>
-          <img class="c-item__icon" v-bind:src="item.icon" />
+          <img v-bind:alt="item.description" class="c-item__icon" v-bind:src="item.icon" />
         </div>
         <div v-if="item.itemType === 3" class="c-item__stats">
           <ul class="c-item__stats-list">

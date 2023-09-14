@@ -148,8 +148,8 @@ export default {
       </ul>
     </div>
     <aside class="c-aside">
+      <h3>Items</h3>
       <ul class="c-aside__links">
-        <h3>Items</h3>
         <li class="c-aside__link" v-for="item in items">
           <a :href="'#' + item.hash">{{ item.name }}</a>
         </li>
