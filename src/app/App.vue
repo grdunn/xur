@@ -23,7 +23,7 @@ export default {
         const VENDOR_PROMISE = await fetch('/api/vendor');
         const VENDOR = await VENDOR_PROMISE.json();
 
-        if (!VENDOR.ErrorCode) {
+        if (VENDOR.ErrorCode === 1) {
 
           const MANIFEST_PROMISE = await fetch('/api/manifest');
           const MANIFEST = await MANIFEST_PROMISE.json();
@@ -118,9 +118,7 @@ export default {
           // We also dont want the last item, which is an exotic cipher. 
           itemArray.shift();
           this.items = itemArray;
-          console.log(itemArray);
         } else {
-          console.log(VENDOR);
           this.message = VENDOR
         }
       } catch (e) {
