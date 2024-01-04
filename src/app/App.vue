@@ -160,7 +160,7 @@ export default {
       v-if="items.length"
       :class="[this.isXurActive ? 'xur-active' : 'xur-inactive']"
     >
-      <div class="container mx-auto px-12">
+      <div class="container mx-auto px-6 md:px-12">
         <header
           class="flex justify-between items-center xur-header-border py-12"
         >
@@ -190,7 +190,7 @@ export default {
             <div class="xur-card-list bg-xur-dark-bg-secondary xur-border p-5">
               <div class="xur-item-header">
                 <h3>Items</h3>
-                <small v-if="this.xurIsActive">Active</small>
+                <small v-if="this.isXurActive">Active</small>
                 <small class="animate-pulse" v-else>Last Weeks Items</small>
               </div>
               <ul>
@@ -215,7 +215,7 @@ export default {
           </div>
         </div>
       </div>
-      <footer class="container mx-auto px-12">
+      <footer class="container mx-auto px-6 md:px-12">
         <div class="flex justify-between py-12">
           <p>2024</p>
           <p>

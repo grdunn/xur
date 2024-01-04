@@ -26,7 +26,7 @@ export default {
         </div>
         <div
           v-if="item.itemType === 3"
-          class="xur-stats bg-xur-dark-bg-secondary xur-border p-5 mb-8"
+          class="xur-stats bg-xur-dark-bg-secondary xur-border p-5 lg:mb-8 mb-4"
         >
           <div class="xur-item-header">
             <h3>{{ item.name }} Stats</h3>
@@ -41,10 +41,10 @@ export default {
           </ul>
         </div>
         <div class="xur-card-border pb-8">
-          <ul class="columns-2 lg:columns-3 gap-8">
+          <ul class="columns-2 lg:columns-3 gap-4 lg:gap-8">
             <li
               v-for="trait in item.traits"
-              class="w-full xur-perk break-inside-avoid bg-xur-dark-bg-secondary xur-border p-5 mb-8"
+              class="w-full xur-perk break-inside-avoid bg-xur-dark-bg-secondary xur-border p-5 lg:mb-8 mb-4"
             >
               <div>
                 <div class="xur-item-header">
