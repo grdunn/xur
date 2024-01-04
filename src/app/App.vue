@@ -7,6 +7,8 @@ export default {
   },
   data() {
     return {
+      isXurActive: true,
+      refreshDate: undefined,
       items: [],
       message: undefined,
     };
@@ -32,6 +34,17 @@ export default {
           );
           const STATS = await STATS_PROMISE.json();
           const SALES = VENDOR.Response.sales.data[XUR_HASH].saleItems;
+
+          this.refreshDate =
+            VENDOR.Response.vendors.data[XUR_HASH].nextRefreshDate;
+
+          const xurStartTime = new Date(this.refreshDate).getTime();
+          const xurEndTime = xurStartTime + 950400000;
+          const dateToday = new Date().getTime();
+          const xurIsActive =
+            dateToday > xurStartTime && dateToday < xurEndTime;
+
+          this.isXurActive = xurIsActive;
 
           // Set itemArray to an empty array first.
           // We'll loop through and add items to this bucket.
@@ -141,88 +154,127 @@ export default {
 </script>
 
 <template>
-  <div v-if="items.length">
-    <div class="container mx-auto px-12">
-      <header class="flex justify-between items-center xur-header-border py-12">
-        <div>
-          <h1><a href="/">Xur Inventory</a></h1>
-        </div>
-        <h6>IX</h6>
-      </header>
-      <div class="flex my-12">
-        <div class="w-4/12 xur-nav">
-          <div class="xur-card-list bg-xur-dark-bg-secondary xur-border p-5">
-            <h3>Items</h3>
+  <transition name="fade" mode="out-in">
+    <div
+      key="1"
+      v-if="items.length"
+      :class="[this.isXurActive ? 'xur-active' : 'xur-inactive']"
+    >
+      <div class="container mx-auto px-12">
+        <header
+          class="flex justify-between items-center xur-header-border py-12"
+        >
+          <div>
+            <h1><a href="/">Xur Inventory</a></h1>
+          </div>
+          <div v-if="isXurActive" class="flex items-center">
+            Xur Is Active
+            <span class="ml-4 animate-pulse xur-activity"></span>
+          </div>
+          <div v-else class="flex items-center">
+            Xur is not active
+            <span class="ml-4 animate-pulse xur-activity"></span>
+          </div>
+          <div class="flex items-center">
+            <a
+              href="https://www.dunngregory.com"
+              target="_blank"
+              class="mr-2 xur-button"
+              >GD</a
+            >
+            <h6>IX</h6>
+          </div>
+        </header>
+        <div class="flex my-12">
+          <div class="hidden lg:block w-4/12 xur-nav">
+            <div class="xur-card-list bg-xur-dark-bg-secondary xur-border p-5">
+              <div class="xur-item-header">
+                <h3>Items</h3>
+                <small v-if="this.xurIsActive">Active</small>
+                <small class="animate-pulse" v-else>Last Weeks Items</small>
+              </div>
+              <ul>
+                <li v-for="item in items">
+                  <a :href="'#' + item.hash">
+                    <div class="flex justify-between items-center">
+                      {{ item.name }}
+                      <small>{{ item.type }}</small>
+                    </div>
+                    <p class="opaque">{{ item.description }}</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="w-full lg:w-8/12 xur-list">
             <ul>
               <li v-for="item in items">
-                <a :href="'#' + item.hash">
-                  <div class="flex justify-between items-center">
-                    {{ item.name }}
-                    <small>{{ item.type }}</small>
-                  </div>
-                  <p class="opaque">{{ item.description }}</p>
-                </a>
+                <Card :key="item.hash" :item="item" />
               </li>
             </ul>
           </div>
         </div>
-        <div class="w-8/12 xur-list">
-          <ul>
-            <li v-for="item in items">
-              <Card :key="item.hash" :item="item" />
-            </li>
-          </ul>
+      </div>
+      <footer class="container mx-auto px-12">
+        <div class="flex justify-between py-12">
+          <p>2024</p>
+          <p>
+            Theme inspired by
+            <a href="https://lucasporterbakker.com" target="_blank">LPB</a>
+          </p>
+          <p>Agent of the Nine.</p>
+        </div>
+      </footer>
+    </div>
+    <div key="2" v-else-if="!items.length && message == undefined">
+      <div class="w-full h-screen flex items-center justify-center">
+        <div
+          class="animate-pulse loader bg-xur-dark-bg-secondary xur-border p-5 flex"
+        >
+          <h3 class="mr-4">Fetching most recent game data</h3>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 14 14"
+            fill="none"
+          >
+            <g clip-path="url(#clip0_1552_21085)">
+              <path
+                d="M7.47003 6.89996C7.3217 6.96437 7.16173 6.9976 7.00003 6.9976C6.83832 6.9976 6.67835 6.96437 6.53003 6.89996L0.830026 4.25996C0.737468 4.21328 0.659684 4.14182 0.605338 4.05354C0.550992 3.96526 0.522217 3.86363 0.522217 3.75996C0.522217 3.65629 0.550992 3.55466 0.605338 3.46638C0.659684 3.37811 0.737468 3.30665 0.830026 3.25996L6.53003 0.599961C6.67835 0.535554 6.83832 0.502319 7.00003 0.502319C7.16173 0.502319 7.3217 0.535554 7.47003 0.599961L13.17 3.23996C13.2626 3.28665 13.3404 3.35811 13.3947 3.44638C13.4491 3.53466 13.4778 3.63629 13.4778 3.73996C13.4778 3.84363 13.4491 3.94526 13.3947 4.03354C13.3404 4.12182 13.2626 4.19328 13.17 4.23996L7.47003 6.89996Z"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M13.5 7.34998L7.4 10.16C7.26972 10.2194 7.12819 10.2502 6.985 10.2502C6.84181 10.2502 6.70028 10.2194 6.57 10.16L0.5 7.34998"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M13.5 10.6L7.4 13.41C7.26972 13.4694 7.12819 13.5002 6.985 13.5002C6.84181 13.5002 6.70028 13.4694 6.57 13.41L0.5 10.6"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_1552_21085">
+                <rect width="14" height="14" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
         </div>
       </div>
     </div>
-  </div>
-  <div v-else-if="!items.length && message == undefined">
-    <div class="w-full h-screen flex items-center justify-center">
-      <div
-        class="animate-pulse loader bg-xur-dark-bg-secondary xur-border p-5 flex"
-      >
-        <h3 class="mr-4">Fetching most recent game data</h3>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 14 14"
-          fill="none"
-        >
-          <g clip-path="url(#clip0_1552_21085)">
-            <path
-              d="M7.47003 6.89996C7.3217 6.96437 7.16173 6.9976 7.00003 6.9976C6.83832 6.9976 6.67835 6.96437 6.53003 6.89996L0.830026 4.25996C0.737468 4.21328 0.659684 4.14182 0.605338 4.05354C0.550992 3.96526 0.522217 3.86363 0.522217 3.75996C0.522217 3.65629 0.550992 3.55466 0.605338 3.46638C0.659684 3.37811 0.737468 3.30665 0.830026 3.25996L6.53003 0.599961C6.67835 0.535554 6.83832 0.502319 7.00003 0.502319C7.16173 0.502319 7.3217 0.535554 7.47003 0.599961L13.17 3.23996C13.2626 3.28665 13.3404 3.35811 13.3947 3.44638C13.4491 3.53466 13.4778 3.63629 13.4778 3.73996C13.4778 3.84363 13.4491 3.94526 13.3947 4.03354C13.3404 4.12182 13.2626 4.19328 13.17 4.23996L7.47003 6.89996Z"
-              stroke="#fff"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M13.5 7.34998L7.4 10.16C7.26972 10.2194 7.12819 10.2502 6.985 10.2502C6.84181 10.2502 6.70028 10.2194 6.57 10.16L0.5 7.34998"
-              stroke="#fff"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M13.5 10.6L7.4 13.41C7.26972 13.4694 7.12819 13.5002 6.985 13.5002C6.84181 13.5002 6.70028 13.4694 6.57 13.41L0.5 10.6"
-              stroke="#fff"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_1552_21085">
-              <rect width="14" height="14" fill="white" />
-            </clipPath>
-          </defs>
-        </svg>
+    <div key="3" v-else="message">
+      <div>
+        <span
+          >Error Code {{ message.ErrorCode }} : {{ message.ErrorStatus }}</span
+        >{{ message.Message
+        }}<a href="https://help.bungie.net/hc/en-us">Bungie.net</a>
       </div>
     </div>
-  </div>
-  <div v-else="message">
-    <div>
-      <span>Error Code {{ message.ErrorCode }} : {{ message.ErrorStatus }}</span
-      >{{ message.Message
-      }}<a href="https://help.bungie.net/hc/en-us">Bungie.net</a>
-    </div>
-  </div>
+  </transition>
 </template>

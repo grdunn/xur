@@ -12,7 +12,8 @@ export default {
 </script>
 
 <template>
-  <div v-bind:id="item.hash" class="xur-card mb-12 pl-8">
+  <a className="offset-100" v-bind:id="item.hash"></a>
+  <div class="xur-card mb-12 lg:pl-8">
     <div>
       <div>
         <div class="flex justify-between items-center pb-8">
@@ -27,7 +28,9 @@ export default {
           v-if="item.itemType === 3"
           class="xur-stats bg-xur-dark-bg-secondary xur-border p-5 mb-8"
         >
-          <h3>{{ item.name }} Stats</h3>
+          <div class="xur-item-header">
+            <h3>{{ item.name }} Stats</h3>
+          </div>
           <ul>
             <li
               v-for="stat in item.stats"
@@ -38,13 +41,15 @@ export default {
           </ul>
         </div>
         <div class="xur-card-border pb-8">
-          <ul class="columns-3 gap-8">
+          <ul class="columns-2 lg:columns-3 gap-8">
             <li
               v-for="trait in item.traits"
               class="w-full xur-perk break-inside-avoid bg-xur-dark-bg-secondary xur-border p-5 mb-8"
             >
               <div>
-                <h3>{{ trait.name }}</h3>
+                <div class="xur-item-header">
+                  <h3>{{ trait.name }}</h3>
+                </div>
                 <p class="opaque">{{ trait.description }}</p>
               </div>
             </li>
