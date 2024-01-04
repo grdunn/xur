@@ -1,14 +1,25 @@
 <script>
 export default {
-  name: 'Stat',
+  name: "Stat",
   props: {
-    stat: Object
-  }
-}
+    stat: Object,
+  },
+};
 </script>
 
 <template>
-  <div v-if="stat && stat.name" class="c-item__stats-name">{{  stat.name }}</div>
-  <div v-if="stat && stat.value" class="c-item__stats-value">{{ stat.value }}</div>
-  <progress v-if="stat && stat.value" v-bind:value="stat.value" max="100"></progress>
+  <div class="flex w-6/12">
+    <p v-if="stat && stat.name" class="">{{ stat.name }}</p>
+    <p v-if="stat && stat.value" class="xur-stat-value">
+      {{ stat.value }}
+    </p>
+  </div>
+  <div class="w-6/12">
+    <progress
+      class="w-full xur-stat"
+      v-if="stat && stat.value"
+      v-bind:value="stat.value"
+      max="100"
+    ></progress>
+  </div>
 </template>

@@ -1,11 +1,96 @@
-@import 'tools/reset';
+// @import 'tools/reset';
 
-@import 'settings/_breakpoints';
+// @import 'settings/_breakpoints';
 
-@import 'components/aside';
-@import 'components/error';
-@import 'components/header';
-@import 'components/item';
-@import 'components/loading';
+// @import 'components/aside';
+// @import 'components/error';
+// @import 'components/header';
+// @import 'components/item';
+// @import 'components/loading';
 
-@import 'objects/container';
+// @import 'objects/container';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$border-radius: 10px;
+$border-color: rgba(255, 255, 255, 0.1);
+$background-color: #161616;
+
+html {
+  font-size: 62.5%;
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  color: #fff;
+  background-color: $background-color;
+}
+
+body {
+  font-size: 1.3rem;
+  background-color: $background-color;
+}
+
+.xur-header-border {
+  border-bottom: 0.5px solid;
+  border-color: rgb(84, 84, 84);
+}
+
+.xur-border {
+  border: 0.5px solid;
+  border-color: rgb(84, 84, 84);
+  border-radius: 10px;
+}
+
+.xur-card-list {
+  ul li {
+    padding: 0.5rem 0;
+    border-bottom: 0.5px solid rgba(84, 84, 84, 0.2);
+    &:hover {
+      opacity: 0.4;
+    }
+  }
+  small {
+    text-transform: uppercase;
+    color: #39ff14;
+  }
+}
+.xur-card {
+  h2 {
+    font-size: 3rem;
+    line-height: 0.8;
+  }
+  .xur-icon {
+    width: 30px;
+    border-radius: 10px;
+    border: 1px solid rgb(84, 84, 84);
+  }
+}
+.xur-stat {
+  height: 3px;
+  &::-webkit-progress-value {
+    background: #39ff14;
+  }
+}
+.xur-stat-value {
+  font-weight: bold;
+  padding: 0 1rem;
+}
+
+.xur-card-list,
+.xur-card {
+  h3 {
+    line-height: 0.9;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid rgb(84, 84, 84);
+    margin-bottom: 1rem;
+  }
+}
+.xur-perk {
+  break-inside: avoid-column;
+}
+
+.opaque {
+  opacity: 0.3;
+}
